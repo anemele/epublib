@@ -2,8 +2,10 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('manifest', type=str, help='manifest of a book (toml file)')
+parser.add_argument('-n', '--no-gen-toc', action='store_true')
 args = parser.parse_args()
 manifest_path: str = args.manifest
+no_gen_toc: bool = args.no_gen_toc
 
 import os.path as op
 
@@ -30,7 +32,7 @@ if manifest.cover is not None:
 chps = [
     epublib.EpubHtml(
         title=chapter.title,
-        file_name=f'chp_{i}.xhtml',
+        file_name=f'chp{i}.xhtml',
         content=chapter.to_text().encode(),
     )
     for i, chapter in enumerate(chapters)
@@ -43,7 +45,22 @@ for chp in chps:
 # - add section
 # - add auto created links to chapters
 
-book.toc = chps
+
+def gen_toc():
+    toc = []
+    it = ['', []]
+    for i, chapter in enumerate(chapters):
+        if chapter.level == 1:
+            it = [chps[i], []]
+            toc.append(it)
+        elif chapter.level == 2:
+            it[1].append(chps[i])
+        else:
+            print('error level:', chapter)
+    return toc
+
+
+book.toc = chps if no_gen_toc else gen_toc()
 
 # add navigation files
 book.add_item(epublib.EpubNcx())

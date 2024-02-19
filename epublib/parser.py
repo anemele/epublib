@@ -15,9 +15,6 @@ class Chapter:
     def __post_init__(self):
         self._lines = []
 
-    def __lt__(self, other: Self):
-        return self.level < other.level
-
     def append(self, line: str) -> Self:
         self._lines.append(line)
         return self

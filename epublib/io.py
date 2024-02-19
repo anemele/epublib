@@ -443,7 +443,7 @@ class EpubWriter:
                 for filename, pageref, label in inserted_pages:
                     li_item = etree.SubElement(pages_ol, 'li')
 
-                    href = u'{}#{}'.format(filename, pageref)
+                    href = f'{filename}#{pageref}'
                     title = label
 
                     a_item = etree.SubElement(
@@ -498,9 +498,11 @@ class EpubWriter:
                         itm,
                         'navPoint',
                         {
-                            'id': section.uid
-                            if isinstance(section, EpubHtml)
-                            else f'sep_{uid}'
+                            'id': (
+                                section.uid
+                                if isinstance(section, EpubHtml)
+                                else f'sep_{uid}'
+                            )
                         },
                     )
 
