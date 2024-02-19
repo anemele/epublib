@@ -1,0 +1,15 @@
+# This is a manifest for parsing a plain text file,
+# which uses a subset of markdown syntax.
+
+# reference: https://www.w3.org/TR/epub-33
+
+id = ''
+title = 'title'
+language = 'zh-CN'
+
+# author(s)
+creators = ['author']
+
+# cover = ''
+
+chapters = ['book1.md', 'book2.md']
